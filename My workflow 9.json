@@ -1,0 +1,78 @@
+{
+  "name": "My workflow 9",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "etl-start",
+        "options": {}
+      },
+      "id": "bedc7630-9184-4d0b-9fad-1aba7f5bda88",
+      "name": "Ricevi JSON (Webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "64285388-adf4-4575-b358-52beae5efd39"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://localhost:8080/api/process",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={{ JSON.stringify($json) }}"
+      },
+      "id": "91bd87c5-3516-4780-9c8f-50f7e7354331",
+      "name": "Invia al server ETL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        256,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://api.gestionale.it/inserisciRisposta",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={{ JSON.stringify($json) }}"
+      },
+      "id": "dac011da-6b17-4a66-a4bf-f9cb1607d73e",
+      "name": "Invia al gestionale esterno",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        512,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Invia al server ETL": {
+      "main": [
+        [
+          {
+            "node": "Invia al gestionale esterno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "984256ae-2c9f-43d4-b809-8f339053306d",
+  "meta": {
+    "instanceId": "3658404443fbcc801d4a7ccd1959096a540bab6c3de2d5f0774ef15abb692dd0"
+  },
+  "id": "BbX9M6PL2Ik3Urdm",
+  "tags": []
+}
