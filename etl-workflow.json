@@ -1,0 +1,72 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "path": "etl-start",
+        "method": "POST",
+        "responseMode": "onReceived"
+      },
+      "id": "Webhook1",
+      "name": "Ricevi JSON (Webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://localhost:8080/api/process",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={{ JSON.stringify($json) }}"
+      },
+      "id": "HttpRequest1",
+      "name": "Invia al server ETL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://api.gestionale.it/inserisciRisposta",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={{ JSON.stringify($json) }}"
+      },
+      "id": "HttpRequest2",
+      "name": "Invia al gestionale esterno",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [750, 300]
+    }
+  ],
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Invia al server ETL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Invia al server ETL": {
+      "main": [
+        [
+          {
+            "node": "Invia al gestionale esterno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "name": "ETL Workflow Completo",
+  "id": "etl-workflow"
+}
